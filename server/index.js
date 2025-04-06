@@ -17,9 +17,11 @@ import uploadRoutes from "./routes/uploadRoutes.js";
 import Hazard from "./models/hazardModel.js";
 import logger from "./utils/logger.js";
 
+// ✅ Load env variables and connect DB
 dotenv.config();
 connectDB();
 
+// ✅ App setup
 const app = express();
 app.use("/uploads", express.static("uploads"));
 
@@ -112,7 +114,7 @@ app.post("/api/hazards", upload.single("image"), async (req, res) => {
     // Step 3: Hazard Priority Prediction
     const priorityResponse = await axios.post(`${process.env.ML_API_URL}/priority/`, {
       type: predictedClass || predictedImageClass || type,
-      location_type: "urban", // You can update this dynamically
+      location_type: "urban", // Can be updated dynamically
       surrounding_hazards_count: 2,
       time_of_day: timeOfDay || "morning",
     });
@@ -143,7 +145,12 @@ app.post("/api/hazards", upload.single("image"), async (req, res) => {
   }
 });
 
-// ✅ Custom Middleware
+// ✅ Health check route (fix for 404 on /)
+app.get("/", (req, res) => {
+  res.send("🌍 Community Hazard Reporting API is live!");
+});
+
+// ✅ Error Handling
 app.use(notFound);
 app.use(errorHandler);
 
@@ -153,6 +160,7 @@ const server = app.listen(PORT, () => {
   logger.info(`🚀 Server running in ${process.env.NODE_ENV || "development"} mode on port ${PORT}`);
 });
 
+// ✅ Handle Unhandled Rejections
 process.on("unhandledRejection", (err) => {
   logger.error("💥 Unhandled Promise Rejection:", err);
   server.close(() => process.exit(1));
