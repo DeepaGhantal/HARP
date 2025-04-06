@@ -8,7 +8,7 @@ import FormData from "form-data";
 
 dotenv.config();
 
-const ML_BASE_URL =;
+const ML_BASE_URL = process.env.ML_BASE_URL || "http://localhost:5001"; // ✅ FIXED
 
 // 🔧 Logger utility
 const logStep = (icon, message, data = null) => {
