@@ -111,7 +111,7 @@ const ReportHazard: React.FC = () => {
 
     console.log("📡 Sending Data to API:", JSON.stringify(hazardData, null, 2));
 
-    const response = await fetch("http://localhost:5000/api/hazards", {
+    const response = await fetch("https://harp-1.onrender.com", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
