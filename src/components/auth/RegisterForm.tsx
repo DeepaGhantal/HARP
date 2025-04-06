@@ -32,7 +32,7 @@ const RegisterForm: React.FC = () => {
     setRegisterError(null);
 
     try {
-      await axios.post('http://localhost:5000/api/users', {
+      await axios.post('https://harp-1.onrender.com', {
         name: data.name,
         email: data.email,
         password: data.password,
